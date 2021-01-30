@@ -2,24 +2,25 @@ package controllers
 
 import (
 	"github.com/revel/revel"
-	"myapp/app"
 )
 
 type App struct {
 	*revel.Controller
 }
 
-type Book struct {
-	Author    string
-	BookName  string
-	Publisher string
-}
-
 func (c App) Index() revel.Result {
-	r, err := app.DB.Query("select (book_name, author_fio, publisher_name) "+
-		"from book "+
-		"where book_name like '$1'",
-		"123",
+	type Book struct {
+		Author    string
+		BookName  string
+		Publisher string
+	}
+
+	r, err := DB.Query("select (book_name, author_fio, publisher_name) " +
+		"from book " +
+		"join book_author using (book_id) " +
+		"left join author using (author_id) " +
+		"join book_publisher using (book_id) " +
+		"left join publisher using (publisher_id)",
 	)
 	if err != nil {
 		return c.RenderError(err)
@@ -29,12 +30,13 @@ func (c App) Index() revel.Result {
 
 	for r.Next() {
 		b := Book{}
-		err := r.Scan(&b.BookName, &b.Author, &b.Publisher)
+		err := r.Scan(&b.BookName)
 		if err != nil {
 			return c.RenderError(err)
 		}
 
 		books = append(books, b)
 	}
+
 	return c.Render()
 }

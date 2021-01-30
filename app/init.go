@@ -1,9 +1,8 @@
 package app
 
 import (
-	"database/sql"
 	"github.com/revel/revel"
-	"log"
+	"myapp/app/controllers"
 )
 
 var (
@@ -13,7 +12,6 @@ var (
 	// BuildTime revel app build-time (ldflags)
 	BuildTime string
 )
-var DB *sql.DB
 
 func init() {
 	// Filters is the default set of global filters.
@@ -32,12 +30,9 @@ func init() {
 		revel.BeforeAfterFilter,       // Call the before and after filter functions
 		revel.ActionInvoker,           // Invoke the action.
 	}
-	var err error
-	DB, err = sql.Open("postgres",
-		"postgres:911010203@localhost:5432/booking")
-	if err != nil {
-		log.Fatal(err)
-	}
+
+	controllers.InitDB()
+
 	// Register startup functions with OnAppStart
 	// revel.DevMode and revel.RunMode only work inside of OnAppStart. See Example Startup Script
 	// ( order dependent )
