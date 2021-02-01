@@ -14,8 +14,8 @@ func (c App) Index() revel.Result {
 		BookName  string
 		Publisher string
 	}
-
-	r, err := DB.Query("select (book_name, author_fio, publisher_name) " +
+	//data->>'id', data->>'type', data->>'title' (book_name, author_fio, publisher_name)
+	r, err := DB.Query("select book_name, author_fio, publisher_name " +
 		"from book " +
 		"join book_author using (book_id) " +
 		"left join author using (author_id) " +
@@ -30,7 +30,7 @@ func (c App) Index() revel.Result {
 
 	for r.Next() {
 		b := Book{}
-		err := r.Scan(&b.BookName)
+		err := r.Scan(&b.BookName, &b.Publisher, &b.Author)
 		if err != nil {
 			return c.RenderError(err)
 		}
