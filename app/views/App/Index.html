@@ -22,7 +22,20 @@
 <div class="container">
   <div class="row">
     <div class="span6">
-      <p>{{.books}}</p>
+      <p>
+        <table border="2" cellpadding="20000" cellspacing="20000">
+        {{range $_, $e := .books}}
+        <tr>
+          <td >{{$e.Author}}</td>
+          <td>{{$e.BookName}}</td>
+          <td>{{$e.Publisher}}</td>
+        </tr>
+        {{end}}
+       </table>
+      </p>
+
+
+
     </div>
   </div>
 </div>
