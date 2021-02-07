@@ -38,7 +38,6 @@ func (c App) Index() revel.Result {
 		books = append(books, b)
 	}
 
-	lenMas := len(books)
-	return c.Render(books, lenMas)
+	return c.Render(books)
 
 }
