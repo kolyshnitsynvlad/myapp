@@ -15,19 +15,23 @@
   <div class="row">
     <div class="span6" >
         <table class="table">
-          <tr>
-          <th>Издательство</th>
-          <th>Название книги</th>
-          <th>Автор</th>
-          </tr>
-        {{range $_, $e := .books}}
-        <tr>
-          <td>{{$e.Author}}</td>
-          <td>{{$e.BookName}}</td>
-          <td>{{$e.Publisher}}</td>
-        </tr>
-        {{end}}
-       </table>
+            <thead>
+            <tr>
+            <th>Издательство</th>
+            <th>Название книги</th>
+            <th>Автор</th>
+            </tr>
+            </thead>
+         <tbody>
+            {{range $_, $e := .books}}
+            <tr>
+            <td>{{$e.Author}}</td>
+            <td>{{$e.BookName}}</td>
+            <td>{{$e.Publisher}}</td>
+            </tr>
+            {{end}}
+         </tbody>
+        </table>
     </div>
   </div>
 </div>

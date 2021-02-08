@@ -1,4 +1,4 @@
-.table{
+ .table{
     border: 1px solid #eee;
     table-layout: fixed;
     width: 100%;
@@ -22,3 +22,10 @@
     background: #F7F7F7;
 }
 
+ .table th.sorted[data-order="-1"]::after {
+    content: "▼"
+}
+
+ .table th.sorted[data-order="1"]::after {
+    content: "▲"
+}
