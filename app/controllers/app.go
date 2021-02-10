@@ -20,9 +20,9 @@ func (c App) Index(Author string, BookName string, Publisher string) revel.Resul
 	//data->>'id', data->>'type', data->>'title' (book_name, author_fio, publisher_name)
 	strselect := "select book_name, author_fio, publisher_name " +
 		"from book " +
-		"join book_author using (book_id) " +
+		"left join book_author using (book_id) " +
 		"left join author using (author_id) " +
-		"join book_publisher using (book_id) " +
+		"left join book_publisher using (book_id) " +
 		"left join publisher using (publisher_id) "
 	var search string
 	if len(Author) > 0 {
@@ -54,11 +54,18 @@ func (c App) Index(Author string, BookName string, Publisher string) revel.Resul
 	for r.Next() {
 		b := Book{}
 		err := r.Scan(&b.BookName, &b.Publisher, &b.Author)
-		if err != nil {
-			return c.RenderError(err)
+		if b.BookName != "" || b.Publisher != "" || b.Author != "" {
+			books = append(books, b)
+		} else {
+			if err != nil {
+				return c.RenderError(err)
+			}
 		}
+		//if err != nil {
+		//	return c.RenderError(err)
+		//}
 
-		books = append(books, b)
+		//books = append(books, b)
 	}
 
 	return c.Render(books, Author, BookName, Publisher)
