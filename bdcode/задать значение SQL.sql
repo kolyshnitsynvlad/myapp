@@ -19,7 +19,9 @@ VALUES
 (4, 'The Great Gatsby'),
 (5, 'Tender id the Night'),
 (6, 'Pride and Prejudice'),
-(7, 'Professional ASP.NET 4.5 in C# and VB');
+(7, 'Professional ASP.NET 4.5 in C# and VB'),
+(8, 'Harry Potter and the Philosophers Stone'),
+(9, 'To Kill a Mockingbird');
 
 INSERT INTO publisher
 (publisher_id, publisher_name)
