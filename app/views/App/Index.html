@@ -17,15 +17,16 @@
         <form action="/" method="POST">
             <table>
                 <tr>
-                    <td>Имя автора</td>
-                    <td>Книга</td>
-                    <td>Издатель</td>
+                    <td><b>Издатель</b></td>
+                    <td><b>Книга</b></td>
+                    <td><b>Имя автора</b></td>
                 </tr>
-                <td> <input type="text" name="Author" value="{{.Author}}"/></td>
+                <tr>
+                <td><input type="text" name="Publisher" value="{{.Publisher}}"/></td>
                 <td><input type="text" name="BookName" value="{{.BookName}}" /></td>
-                <td><input type="text" name="Publisher" value="{{.Publisher}}" /></td>
-                <td><input type="submit" value="Say hello!"/></td>
-                </td>
+                <td><input type="text" name="Author" value="{{.Author}}" /></td>
+                <td><b><input type="submit" value="Поиск"/></b></td>
+                </tr>
             </table>
         </form>
         <table class="table">
