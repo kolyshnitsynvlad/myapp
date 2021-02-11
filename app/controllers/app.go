@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"github.com/revel/revel"
+	"strings"
 )
 
 type App struct {
@@ -9,9 +10,14 @@ type App struct {
 }
 
 func (c App) Index(Author string, BookName string, Publisher string) revel.Result {
+	Author = strings.TrimSpace(Author)
+	BookName = strings.TrimSpace(BookName)
+	Publisher = strings.TrimSpace(Publisher)
+
 	c.Log.Debug(Author)
 	c.Log.Debug(BookName)
 	c.Log.Debug(Publisher)
+
 	type Book struct {
 		Author    string
 		BookName  string
@@ -26,7 +32,11 @@ func (c App) Index(Author string, BookName string, Publisher string) revel.Resul
 		"left join publisher using (publisher_id) "
 	var search string
 	if len(Author) > 0 {
-		search = "where author_fio ilike '%" + Author + "%' "
+		if strings.ToLower(Author) == "нет автора" {
+			search = "where author_fio is null "
+		} else {
+			search = "where author_fio ilike '%" + Author + "%' "
+		}
 	}
 	if len(BookName) > 0 {
 		if len(search) > 0 {
@@ -37,9 +47,14 @@ func (c App) Index(Author string, BookName string, Publisher string) revel.Resul
 	}
 	if len(Publisher) > 0 {
 		if len(search) > 0 {
-			search += "and publisher_name ilike '%" + Publisher + "%' "
+			search += "and publisher_name "
 		} else {
-			search = "where publisher_name ilike '%" + Publisher + "%' "
+			search = "where publisher_name "
+		}
+		if strings.ToLower(Publisher) == "нет издателя" {
+			search += "is null "
+		} else {
+			search += "ilike '%" + Publisher + "%' "
 		}
 	}
 	strselect += search
@@ -57,7 +72,7 @@ func (c App) Index(Author string, BookName string, Publisher string) revel.Resul
 			Publisher interface{}
 			Author    interface{}
 		}{}
-		err := r.Scan(&bi.BookName, &bi.Publisher, &bi.Author)
+		err := r.Scan(&bi.BookName, &bi.Author, &bi.Publisher)
 		if err != nil {
 			return c.RenderError(err)
 		}
@@ -72,7 +87,18 @@ func (c App) Index(Author string, BookName string, Publisher string) revel.Resul
 			b.Author = str
 		}
 
-		books = append(books, b)
+		var exists bool
+		for i, v := range books {
+			if v.BookName == b.BookName && v.Publisher == b.Publisher {
+				books[i].Author += ", " + b.Author
+				exists = true
+				break
+			}
+		}
+
+		if !exists {
+			books = append(books, b)
+		}
 	}
 
 	return c.Render(books, Author, BookName, Publisher)

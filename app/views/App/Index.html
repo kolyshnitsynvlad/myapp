@@ -17,24 +17,24 @@
         <form action="/" method="POST">
             <table>
                 <tr>
-                    <td><b>Издатель</b></td>
-                    <td><b>Книга</b></td>
                     <td><b>Имя автора</b></td>
+                    <td><b>Книга</b></td>
+                    <td><b>Издатель</b></td>
                 </tr>
                 <tr>
-                <td><input type="text" name="Publisher" value="{{.Publisher}}"/></td>
-                <td><input type="text" name="BookName" value="{{.BookName}}" /></td>
-                <td><input type="text" name="Author" value="{{.Author}}" /></td>
-                <td><b><input type="submit" value="Поиск"/></b></td>
+                    <td><input type="text" name="Author" value="{{.Author}}" /></td>
+                    <td><input type="text" name="BookName" value="{{.BookName}}" /></td>
+                    <td><input type="text" name="Publisher" value="{{.Publisher}}"/></td>
+                    <td><b><input type="submit" value="Поиск"/></b></td>
                 </tr>
             </table>
         </form>
         <table class="table">
             <thead>
             <tr>
-            <th>Издательство</th>
-            <th>Название книги</th>
             <th>Автор</th>
+            <th>Название книги</th>
+            <th>Издательство</th>
             </tr>
             </thead>
          <tbody>
