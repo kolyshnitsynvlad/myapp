@@ -52,20 +52,27 @@ func (c App) Index(Author string, BookName string, Publisher string) revel.Resul
 	books := make([]Book, 0)
 
 	for r.Next() {
-		b := Book{}
-		err := r.Scan(&b.BookName, &b.Publisher, &b.Author)
-		if b.BookName != "" || b.Publisher != "" || b.Author != "" {
-			books = append(books, b)
-		} else {
-			if err != nil {
-				return c.RenderError(err)
-			}
+		bi := struct {
+			BookName  interface{}
+			Publisher interface{}
+			Author    interface{}
+		}{}
+		err := r.Scan(&bi.BookName, &bi.Publisher, &bi.Author)
+		if err != nil {
+			return c.RenderError(err)
 		}
-		//if err != nil {
-		//	return c.RenderError(err)
-		//}
+		b := Book{}
+		if str, ok := bi.BookName.(string); ok {
+			b.BookName = str
+		}
+		if str, ok := bi.Publisher.(string); ok {
+			b.Publisher = str
+		}
+		if str, ok := bi.Author.(string); ok {
+			b.Author = str
+		}
 
-		//books = append(books, b)
+		books = append(books, b)
 	}
 
 	return c.Render(books, Author, BookName, Publisher)
